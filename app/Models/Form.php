@@ -10,6 +10,9 @@ class Form extends Model
     use HasFactory;
 
     protected $fillable = ['university_id', 'data'];
+    protected $casts = [
+        'data' => 'array',
+    ];
 
     public function university()
     {

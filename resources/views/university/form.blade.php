@@ -789,7 +789,7 @@
             <!-- Поле для загрузки файла -->
             <div class="form-group">
                 <label>Загрузить файл для пункта 17 (Часть 2) (при необходимости)</label>
-                <input type="file" name="file_founders_funding_share" class="form-control-file">
+                <input type="file" name="file_founders_funding_share]" class="form-control-file">
                 @if(isset($formEntry->data['file_founders_funding_share']))
                 <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_founders_funding_share']) }}"
                                         target="_blank">Скачать</a></p>
