@@ -1,19 +1,151 @@
 @extends('layouts.app')
+<style>
+    /* Общие стили */
+body {
+    background: #f5fff5; /* Светло-зеленый пастельный оттенок для фона */
+    font-family: "Segoe UI", sans-serif;
+    color: #333;
+}
 
+h1, h3, label {
+    font-family: "Segoe UI", sans-serif;
+    font-weight: 600;
+    color: #2b572c; /* Темно-зеленый оттенок для заголовков и текста */
+}
+
+h1 {
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 22px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #2b572c;
+    padding-bottom: 5px;
+}
+
+/* Контейнер формы */
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* Формы и поля ввода */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #a6d1a6;
+    box-shadow: none;
+    transition: border-color 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #2b572c;
+    box-shadow: 0 0 0 1px #2b572c33;
+}
+
+input[type="file"] {
+    padding: 5px 0;
+}
+
+/* Кнопки */
+.btn-success {
+    background: #3d8b3d;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: background 0.3s ease;
+}
+
+.btn-success:hover {
+    background: #2b572c;
+}
+
+/* Оповещения */
+.alert {
+    border-radius: 4px;
+    margin-top: 20px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: #e4f7e4;
+    border-color: #3d8b3d;
+    color: #2b572c;
+}
+
+.alert-danger {
+    background: #fdeaea;
+    border-color: #e56b6b;
+    color: #a33c3c;
+}
+
+.alert ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+/* Список уже загруженных файлов */
+.uploaded-files-list {
+    list-style: disc;
+    padding-left: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #2b572c;
+}
+
+.uploaded-files-list li {
+    margin-bottom: 5px;
+}
+
+.uploaded-files-list a {
+    color: #3d8b3d;
+    text-decoration: none;
+}
+
+.uploaded-files-list a:hover {
+    text-decoration: underline;
+}
+
+/* Дополнительный акцент */
+label[for^="file_"] {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 5px;
+    color: #2b572c;
+}
+
+.btn-success.mt-4 {
+    margin-top: 30px !important;
+}
+
+</style>
 @section('content')
 <div class="container">
     <h1>Редактирование формы для: {{ $university->name }}</h1>
 
     @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
+        <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
     @if($errors->any())
@@ -34,7 +166,7 @@
         <!-- ЧАСТЬ 1 -->
         <h3>ЧАСТЬ 1</h3>
 
-        <!-- Пункт 1: Наличие реализуемой образовательной программы «Теология» -->
+        <!-- 1. program_theology -->
         <div class="form-group">
             <label>1. Наличие реализуемой образовательной программы «Теология»</label>
             <select name="program_theology" class="form-control" required>
@@ -43,15 +175,9 @@
                 <option value="НЕТ" {{ (old('program_theology', $formEntry->data['program_theology'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_program_theology']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_program_theology']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 1 (при необходимости)</label>
-            <input type="file" name="file_program_theology" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_program_theology'] ?? [], 'name' => 'file_program_theology'])
 
-        <!-- Пункт 2: Наличие государственной аккредитации -->
+        <!-- 2. state_accreditation -->
         <div class="form-group">
             <label>2. Наличие государственной аккредитации</label>
             <select name="state_accreditation" class="form-control" required>
@@ -60,482 +186,340 @@
                 <option value="НЕТ" {{ (old('state_accreditation', $formEntry->data['state_accreditation'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_state_accreditation']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_state_accreditation']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 2 (при необходимости)</label>
-            <input type="file" name="file_state_accreditation" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_state_accreditation'] ?? [], 'name' => 'file_state_accreditation'])
 
-        <!-- Пункт 3: Процент соответствия программ стандартам -->
+        <!-- 3. compliance_percentage -->
         <div class="form-group">
-            <label>3. Процент соответствия программ стандартам (%)</label>
+            <label>3. Соблюдение при реализации программ (%)</label>
             <input type="number" name="compliance_percentage" class="form-control" min="0" max="100" value="{{ old('compliance_percentage', $formEntry->data['compliance_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_compliance_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_compliance_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 3 (при необходимости)</label>
-            <input type="file" name="file_compliance_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_compliance_percentage'] ?? [], 'name' => 'file_compliance_percentage'])
 
-        <!-- Пункт 4: Результаты тестирования -->
+        <!-- 4. test_results -->
         <div class="form-group">
             <label>4. Результаты тестирования (%)</label>
             <input type="number" name="test_results" class="form-control" min="0" max="100" value="{{ old('test_results', $formEntry->data['test_results'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_test_results']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_test_results']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 4 (при необходимости)</label>
-            <input type="file" name="file_test_results" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_test_results'] ?? [], 'name' => 'file_test_results'])
 
-        <!-- Пункт 5: Процент занятости выпускников -->
+        <!-- 5. employment_rate -->
         <div class="form-group">
-            <label>5. Процент занятости выпускников (%)</label>
+            <label>5. Доля трудоустроенных по специальности выпускников за последние 3 года (%)</label>
             <input type="number" name="employment_rate" class="form-control" min="0" max="100" value="{{ old('employment_rate', $formEntry->data['employment_rate'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_employment_rate']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_employment_rate']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 5 (при необходимости)</label>
-            <input type="file" name="file_employment_rate" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_employment_rate'] ?? [], 'name' => 'file_employment_rate'])
 
-        <!-- Пункт 6: Количество студентов на дневной форме обучения -->
+        <!-- 6. full_time_students -->
         <div class="form-group">
-            <label>6. Количество студентов на дневной форме обучения</label>
+            <label>6. Количество студентов очной формы обучения</label>
             <input type="number" name="full_time_students" class="form-control" min="0" value="{{ old('full_time_students', $formEntry->data['full_time_students'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_full_time_students']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_full_time_students']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 6 (при необходимости)</label>
-            <input type="file" name="file_full_time_students" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_full_time_students'] ?? [], 'name' => 'file_full_time_students'])
 
-        <!-- Пункт 7: Процент охвата NPR -->
+        <!-- 7. npr_coverage -->
         <div class="form-group">
-            <label>7. Процент охвата NPR (%)</label>
+            <label>7. Степень обеспеченности реализации ООП НПР (%)</label>
             <input type="number" name="npr_coverage" class="form-control" min="0" max="100" value="{{ old('npr_coverage', $formEntry->data['npr_coverage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_npr_coverage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_npr_coverage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 7 (при необходимости)</label>
-            <input type="file" name="file_npr_coverage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_npr_coverage'] ?? [], 'name' => 'file_npr_coverage'])
 
-        <!-- Пункт 8: Процент обладателей ученых степеней -->
+        <!-- 8. degree_holders_percentage -->
         <div class="form-group">
-            <label>8. Процент обладателей ученых степеней (%)</label>
+            <label>8. Доля НПР с ученой степенью (%)</label>
             <input type="number" name="degree_holders_percentage" class="form-control" min="0" max="100" value="{{ old('degree_holders_percentage', $formEntry->data['degree_holders_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_degree_holders_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_degree_holders_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 8 (при необходимости)</label>
-            <input type="file" name="file_degree_holders_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_degree_holders_percentage'] ?? [], 'name' => 'file_degree_holders_percentage'])
 
-        <!-- Пункт 9: Доля финансирования от учредителей -->
+        <!-- 9. founders_funding_share -->
         <div class="form-group">
-            <label>9. Доля финансирования от учредителей (%)</label>
+            <label>9. Доля финансовых средств учредителей (%)</label>
             <input type="number" name="founders_funding_share" class="form-control" min="0" max="100" value="{{ old('founders_funding_share', $formEntry->data['founders_funding_share'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_founders_funding_share']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_founders_funding_share']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 9 (при необходимости)</label>
-            <input type="file" name="file_founders_funding_share" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_founders_funding_share'] ?? [], 'name' => 'file_founders_funding_share'])
 
-        <!-- Пункт 10: Доля грантового финансирования -->
+        <!-- 10. grant_funding -->
         <div class="form-group">
-            <label>10. Доля грантового финансирования (%)</label>
+            <label>10. Объем грантового финансирования (руб.)</label>
             <input type="number" name="grant_funding" class="form-control" min="0" value="{{ old('grant_funding', $formEntry->data['grant_funding'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_grant_funding']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_grant_funding']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 10 (при необходимости)</label>
-            <input type="file" name="file_grant_funding" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_grant_funding'] ?? [], 'name' => 'file_grant_funding'])
 
-        <!-- Продолжайте добавлять остальные пункты ЧАСТИ 1 аналогично -->
+        <!-- 11. vak_publications_per_npr -->
+        <div class="form-group">
+            <label>11. Количество публикаций в журналах ВАК (на 1 НПР)</label>
+            <input type="number" name="vak_publications_per_npr" class="form-control" min="0" step="0.01" value="{{ old('vak_publications_per_npr', $formEntry->data['vak_publications_per_npr'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_vak_publications_per_npr'] ?? [], 'name' => 'file_vak_publications_per_npr'])
+
+        <!-- 12. monographs_per_npr -->
+        <div class="form-group">
+            <label>12. Кол-во монографий на одного НПР</label>
+            <input type="number" name="monographs_per_npr" class="form-control" min="0" step="0.01" value="{{ old('monographs_per_npr', $formEntry->data['monographs_per_npr'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_monographs_per_npr'] ?? [], 'name' => 'file_monographs_per_npr'])
+
+        <!-- 13. h_index_per_npr -->
+        <div class="form-group">
+            <label>13. Средний индекс Хирша (на 1 НПР)</label>
+            <input type="number" name="h_index_per_npr" class="form-control" min="0" step="0.01" value="{{ old('h_index_per_npr', $formEntry->data['h_index_per_npr'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_h_index_per_npr'] ?? [], 'name' => 'file_h_index_per_npr'])
+
+        <!-- 14. olympiad_winners -->
+        <div class="form-group">
+            <label>14. Кол-во победителей олимпиад (человек)</label>
+            <input type="number" name="olympiad_winners" class="form-control" min="0" value="{{ old('olympiad_winners', $formEntry->data['olympiad_winners'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_olympiad_winners'] ?? [], 'name' => 'file_olympiad_winners'])
+
+        <!-- 15. patriotic_events -->
+        <div class="form-group">
+            <label>15. Мероприятия гражданско-патриотической направленности (кол-во)</label>
+            <input type="number" name="patriotic_events" class="form-control" min="0" value="{{ old('patriotic_events', $formEntry->data['patriotic_events'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_patriotic_events'] ?? [], 'name' => 'file_patriotic_events'])
+
+        <!-- 16. website_compliance -->
+        <div class="form-group">
+            <label>16. Соответствие сайта требованиям (%)</label>
+            <input type="number" name="website_compliance" class="form-control" min="0" max="100" value="{{ old('website_compliance', $formEntry->data['website_compliance'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_website_compliance'] ?? [], 'name' => 'file_website_compliance'])
+
+        <!-- 17. media_activity -->
+        <div class="form-group">
+            <label>17. Медийная активность (публикаций в год)</label>
+            <input type="number" name="media_activity" class="form-control" min="0" value="{{ old('media_activity', $formEntry->data['media_activity'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_media_activity'] ?? [], 'name' => 'file_media_activity'])
+
+        <!-- 18. indigenous_students_percentage -->
+        <div class="form-group">
+            <label>18. Кол-во студентов из коренных народов РФ (%)</label>
+            <input type="number" name="indigenous_students_percentage" class="form-control" min="0" max="100" value="{{ old('indigenous_students_percentage', $formEntry->data['indigenous_students_percentage'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_indigenous_students_percentage'] ?? [], 'name' => 'file_indigenous_students_percentage'])
+
 
         <!-- ЧАСТЬ 2 -->
         <h3>ЧАСТЬ 2</h3>
 
-        <!-- Пункт 1: Наличие внутренней системы качества -->
+        <!-- 1. national_events_per_npr -->
         <div class="form-group">
-            <label>1. Наличие внутренней системы качества</label>
+            <label>1 (Ч2). Участие во всероссийских мероприятиях (на 1 НПР)</label>
+            <input type="number" name="national_events_per_npr" class="form-control" min="0" step="0.01" value="{{ old('national_events_per_npr', $formEntry->data['national_events_per_npr'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_national_events_per_npr'] ?? [], 'name' => 'file_national_events_per_npr'])
+
+        <!-- 2. internal_quality_system -->
+        <div class="form-group">
+            <label>2 (Ч2). Наличие внутренней системы качества</label>
             <select name="internal_quality_system" class="form-control" required>
                 <option value="">-- Выберите --</option>
                 <option value="Имеется" {{ (old('internal_quality_system', $formEntry->data['internal_quality_system'] ?? '') == 'Имеется') ? 'selected' : '' }}>Имеется</option>
                 <option value="Отсутствует" {{ (old('internal_quality_system', $formEntry->data['internal_quality_system'] ?? '') == 'Отсутствует') ? 'selected' : '' }}>Отсутствует</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_internal_quality_system']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_internal_quality_system']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 1 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_internal_quality_system" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_internal_quality_system'] ?? [], 'name' => 'file_internal_quality_system'])
 
-        <!-- Пункт 2: Профессиональные соревнования -->
+        <!-- 3. professional_competitions -->
         <div class="form-group">
-            <label>2. Профессиональные соревнования</label>
+            <label>3 (Ч2). Кол-во конкурсов проф. направленности</label>
             <input type="number" name="professional_competitions" class="form-control" min="0" value="{{ old('professional_competitions', $formEntry->data['professional_competitions'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_professional_competitions']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_professional_competitions']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 2 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_professional_competitions" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_professional_competitions'] ?? [], 'name' => 'file_professional_competitions'])
 
-        <!-- Пункт 3: Награды NPR -->
+        <!-- 4. npr_award_winners -->
         <div class="form-group">
-            <label>3. Награды NPR</label>
+            <label>4 (Ч2). Победители и призеры региональных/всероссийских конкурсов НПР</label>
             <input type="number" name="npr_award_winners" class="form-control" min="0" value="{{ old('npr_award_winners', $formEntry->data['npr_award_winners'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_npr_award_winners']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_npr_award_winners']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 3 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_npr_award_winners" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_npr_award_winners'] ?? [], 'name' => 'file_npr_award_winners'])
 
-        <!-- Пункт 4: Процент выпускников -->
+        <!-- 5. graduates_percentage -->
         <div class="form-group">
-            <label>4. Процент выпускников (%)</label>
+            <label>5 (Ч2). Процент выпускников к общему числу поступивших (%)</label>
             <input type="number" name="graduates_percentage" class="form-control" min="0" max="100" value="{{ old('graduates_percentage', $formEntry->data['graduates_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_graduates_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_graduates_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 4 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_graduates_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_graduates_percentage'] ?? [], 'name' => 'file_graduates_percentage'])
 
-        <!-- Пункт 5: Процент аспирантов -->
+        <!-- 6. postgraduate_percentage -->
         <div class="form-group">
-            <label>5. Процент аспирантов (%)</label>
+            <label>6 (Ч2). Процент выпускников бакалавриата, продолжающих обучение (%)</label>
             <input type="number" name="postgraduate_percentage" class="form-control" min="0" max="100" value="{{ old('postgraduate_percentage', $formEntry->data['postgraduate_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_postgraduate_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_postgraduate_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 5 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_postgraduate_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_postgraduate_percentage'] ?? [], 'name' => 'file_postgraduate_percentage'])
 
-        <!-- Пункт 6: Процент использования EBS -->
+        <!-- 7. ebs_usage_percentage -->
         <div class="form-group">
-            <label>6. Процент использования EBS (%)</label>
+            <label>7 (Ч2). Процент использования ЭБС (%)</label>
             <input type="number" name="ebs_usage_percentage" class="form-control" min="0" max="100" value="{{ old('ebs_usage_percentage', $formEntry->data['ebs_usage_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_ebs_usage_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_ebs_usage_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 6 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_ebs_usage_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_ebs_usage_percentage'] ?? [], 'name' => 'file_ebs_usage_percentage'])
 
-        <!-- Пункт 7: Доступность программ (%) -->
+        <!-- 8. programs_availability -->
         <div class="form-group">
-            <label>7. Доступность программ (%)</label>
+            <label>8 (Ч2). Доступность разработанных программ (%)</label>
             <input type="number" name="programs_availability" class="form-control" min="0" max="100" value="{{ old('programs_availability', $formEntry->data['programs_availability'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_programs_availability']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_programs_availability']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 7 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_programs_availability" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_programs_availability'] ?? [], 'name' => 'file_programs_availability'])
 
-        <!-- Пункт 8: Процент использования EIOS -->
+        <!-- 9. eios_usage_percentage -->
         <div class="form-group">
-            <label>8. Процент использования EIOS (%)</label>
+            <label>9 (Ч2). Процент использования ЭИОС (%)</label>
             <input type="number" name="eios_usage_percentage" class="form-control" min="0" max="100" value="{{ old('eios_usage_percentage', $formEntry->data['eios_usage_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_eios_usage_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_eios_usage_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 8 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_eios_usage_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_eios_usage_percentage'] ?? [], 'name' => 'file_eios_usage_percentage'])
 
-        <!-- Пункт 9: Международные соглашения -->
+        <!-- 10. international_agreements -->
         <div class="form-group">
-            <label>9. Международные соглашения</label>
+            <label>10 (Ч2). Международные соглашения</label>
             <select name="international_agreements" class="form-control" required>
                 <option value="">-- Выберите --</option>
                 <option value="ДА" {{ (old('international_agreements', $formEntry->data['international_agreements'] ?? '') == 'ДА') ? 'selected' : '' }}>ДА</option>
                 <option value="НЕТ" {{ (old('international_agreements', $formEntry->data['international_agreements'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_international_agreements']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_international_agreements']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 9 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_international_agreements" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_international_agreements'] ?? [], 'name' => 'file_international_agreements'])
 
-        <!-- Пункт 10: Процент выпускников медресе -->
+        <!-- 11. medrese_graduates_percentage -->
         <div class="form-group">
-            <label>10. Процент выпускников медресе (%)</label>
+            <label>11 (Ч2). Процент выпускников медресе (%)</label>
             <input type="number" name="medrese_graduates_percentage" class="form-control" min="0" max="100" value="{{ old('medrese_graduates_percentage', $formEntry->data['medrese_graduates_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_medrese_graduates_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_medrese_graduates_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 10 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_medrese_graduates_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_medrese_graduates_percentage'] ?? [], 'name' => 'file_medrese_graduates_percentage'])
 
-        <!-- Пункт 11: Наличие научных публикаций -->
+        <!-- 12. non_scientific_publications -->
         <div class="form-group">
-            <label>11. Наличие научных публикаций</label>
+            <label>12 (Ч2). Издание не связанных с наукой материалов</label>
             <select name="non_scientific_publications" class="form-control" required>
                 <option value="">-- Выберите --</option>
                 <option value="ДА" {{ (old('non_scientific_publications', $formEntry->data['non_scientific_publications'] ?? '') == 'ДА') ? 'selected' : '' }}>ДА</option>
                 <option value="НЕТ" {{ (old('non_scientific_publications', $formEntry->data['non_scientific_publications'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_non_scientific_publications']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_non_scientific_publications']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 11 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_non_scientific_publications" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_non_scientific_publications'] ?? [], 'name' => 'file_non_scientific_publications'])
 
-        <!-- Пункт 12: Процент студентов до 25 лет -->
+        <!-- 13. students_under_25_percentage -->
         <div class="form-group">
-            <label>12. Процент студентов до 25 лет (%)</label>
+            <label>13 (Ч2). Процент студентов до 25 лет (%)</label>
             <input type="number" name="students_under_25_percentage" class="form-control" min="0" max="100" value="{{ old('students_under_25_percentage', $formEntry->data['students_under_25_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_students_under_25_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_students_under_25_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 12 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_students_under_25_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_students_under_25_percentage'] ?? [], 'name' => 'file_students_under_25_percentage'])
 
-        <!-- Пункт 13: Процент студентов из мусульманских организаций -->
+        <!-- 14. students_from_muslim_orgs_percentage -->
         <div class="form-group">
-            <label>13. Процент студентов из мусульманских организаций (%)</label>
+            <label>14 (Ч2). Процент студентов от мусульманских орг. (%)</label>
             <input type="number" name="students_from_muslim_orgs_percentage" class="form-control" min="0" max="100" value="{{ old('students_from_muslim_orgs_percentage', $formEntry->data['students_from_muslim_orgs_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_students_from_muslim_orgs_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_students_from_muslim_orgs_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 13 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_students_from_muslim_orgs_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_students_from_muslim_orgs_percentage'] ?? [], 'name' => 'file_students_from_muslim_orgs_percentage'])
 
-        <!-- Пункт 14: Количество вовлеченных мусульманских организаций -->
+        <!-- 15. muslim_orgs_involved -->
         <div class="form-group">
-            <label>14. Количество вовлеченных мусульманских организаций</label>
+            <label>15 (Ч2). Количество мусульманских религ. орг. вовлеченных</label>
             <input type="number" name="muslim_orgs_involved" class="form-control" min="0" value="{{ old('muslim_orgs_involved', $formEntry->data['muslim_orgs_involved'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_muslim_orgs_involved']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_muslim_orgs_involved']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 14 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_muslim_orgs_involved" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_muslim_orgs_involved'] ?? [], 'name' => 'file_muslim_orgs_involved'])
 
-        <!-- Пункт 15: Процент выпускников, трудоустроенных в мусульманских организациях -->
+        <!-- 16. graduates_employed_in_muslim_orgs_percentage -->
         <div class="form-group">
-            <label>15. Процент выпускников, трудоустроенных в мусульманских организациях (%)</label>
+            <label>16 (Ч2). Процент выпускников, трудоустроенных в мусульм. орг. (%)</label>
             <input type="number" name="graduates_employed_in_muslim_orgs_percentage" class="form-control" min="0" max="100" value="{{ old('graduates_employed_in_muslim_orgs_percentage', $formEntry->data['graduates_employed_in_muslim_orgs_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_graduates_employed_in_muslim_orgs_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_graduates_employed_in_muslim_orgs_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 15 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_graduates_employed_in_muslim_orgs_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_graduates_employed_in_muslim_orgs_percentage'] ?? [], 'name' => 'file_graduates_employed_in_muslim_orgs_percentage'])
 
-        <!-- Пункт 16: Количество совместных мероприятий с мусульманскими организациями -->
+        <!-- 17. joint_events_with_muslim_orgs -->
         <div class="form-group">
-            <label>16. Количество совместных мероприятий с мусульманскими организациями</label>
+            <label>17 (Ч2). Кол-во совместных мероприятий с мусульм. орг.</label>
             <input type="number" name="joint_events_with_muslim_orgs" class="form-control" min="0" value="{{ old('joint_events_with_muslim_orgs', $formEntry->data['joint_events_with_muslim_orgs'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_joint_events_with_muslim_orgs']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_joint_events_with_muslim_orgs']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 16 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_joint_events_with_muslim_orgs" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_joint_events_with_muslim_orgs'] ?? [], 'name' => 'file_joint_events_with_muslim_orgs'])
 
-        <!-- Пункт 17: Доля грантового финансирования -->
+        <!-- 18. founders_funding_share -->
         <div class="form-group">
-            <label>17. Доля грантового финансирования (%)</label>
+            <label>18 (Ч2). Доля средств учредителей (%)</label>
+            <input type="number" name="founders_funding_share" class="form-control" min="0" max="100" value="{{ old('founders_funding_share', $formEntry->data['founders_funding_share'] ?? '') }}" required>
+        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_founders_funding_share'] ?? [], 'name' => 'file_founders_funding_share'])
+
+        <!-- 19. donations_share -->
+        <div class="form-group">
+            <label>19 (Ч2). Объем привлеченных пожертвований (%)</label>
             <input type="number" name="donations_share" class="form-control" min="0" max="100" value="{{ old('donations_share', $formEntry->data['donations_share'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_donations_share']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_donations_share']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 17 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_donations_share" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_donations_share'] ?? [], 'name' => 'file_donations_share'])
 
-        <!-- Пункт 18: Доля платного образования -->
+        <!-- 20. paid_education_share -->
         <div class="form-group">
-            <label>18. Доля платного образования (%)</label>
+            <label>20 (Ч2). Доля платного образования (%)</label>
             <input type="number" name="paid_education_share" class="form-control" min="0" max="100" value="{{ old('paid_education_share', $formEntry->data['paid_education_share'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_paid_education_share']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_paid_education_share']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 18 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_paid_education_share" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_paid_education_share'] ?? [], 'name' => 'file_paid_education_share'])
 
-        <!-- Пункт 19: Количество проведенных научных мероприятий -->
+        <!-- 21. scientific_events_held -->
         <div class="form-group">
-            <label>19. Количество проведенных научных мероприятий</label>
+            <label>21 (Ч2). Кол-во научных/научно-метод. мероприятий</label>
             <input type="number" name="scientific_events_held" class="form-control" min="0" value="{{ old('scientific_events_held', $formEntry->data['scientific_events_held'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_scientific_events_held']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_scientific_events_held']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 19 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_scientific_events_held" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_scientific_events_held'] ?? [], 'name' => 'file_scientific_events_held'])
 
-        <!-- Пункт 20: Процент студентов в науке -->
+        <!-- 22. students_in_science_percentage -->
         <div class="form-group">
-            <label>20. Процент студентов в науке (%)</label>
+            <label>22 (Ч2). Процент студентов, участвующих в науке (%)</label>
             <input type="number" name="students_in_science_percentage" class="form-control" min="0" max="100" value="{{ old('students_in_science_percentage', $formEntry->data['students_in_science_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_students_in_science_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_students_in_science_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 20 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_students_in_science_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_students_in_science_percentage'] ?? [], 'name' => 'file_students_in_science_percentage'])
 
-        <!-- Пункт 21: Наличие образовательного плана -->
+        <!-- 23. has_educational_plan -->
         <div class="form-group">
-            <label>21. Наличие образовательного плана</label>
+            <label>23 (Ч2). Наличие утвержденного плана воспитательной работы</label>
             <select name="has_educational_plan" class="form-control" required>
                 <option value="">-- Выберите --</option>
                 <option value="ДА" {{ (old('has_educational_plan', $formEntry->data['has_educational_plan'] ?? '') == 'ДА') ? 'selected' : '' }}>ДА</option>
                 <option value="НЕТ" {{ (old('has_educational_plan', $formEntry->data['has_educational_plan'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_has_educational_plan']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_has_educational_plan']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 21 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_has_educational_plan" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_has_educational_plan'] ?? [], 'name' => 'file_has_educational_plan'])
 
-        <!-- Пункт 22: Количество лекций иностранных ученых -->
+        <!-- 24. lectures_by_foreign_scholars -->
         <div class="form-group">
-            <label>22. Количество лекций иностранных ученых</label>
+            <label>24 (Ч2). Количество лекций зарубежных ученых</label>
             <input type="number" name="lectures_by_foreign_scholars" class="form-control" min="0" value="{{ old('lectures_by_foreign_scholars', $formEntry->data['lectures_by_foreign_scholars'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_lectures_by_foreign_scholars']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_lectures_by_foreign_scholars']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 22 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_lectures_by_foreign_scholars" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_lectures_by_foreign_scholars'] ?? [], 'name' => 'file_lectures_by_foreign_scholars'])
 
-        <!-- Пункт 23: Количество международных членств -->
+        <!-- 25. international_memberships -->
         <div class="form-group">
-            <label>23. Количество международных членств</label>
+            <label>25 (Ч2). Кол-во международных членств</label>
             <input type="number" name="international_memberships" class="form-control" min="0" value="{{ old('international_memberships', $formEntry->data['international_memberships'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_international_memberships']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_international_memberships']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 23 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_international_memberships" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_international_memberships'] ?? [], 'name' => 'file_international_memberships'])
 
-        <!-- Пункт 24: Подготовка аудиовизуального контента -->
+        <!-- 26. prepared_audiovisual_content -->
         <div class="form-group">
-            <label>24. Подготовка аудиовизуального контента</label>
+            <label>26 (Ч2). Подготовка аудиовизуального контента</label>
             <select name="prepared_audiovisual_content" class="form-control" required>
                 <option value="">-- Выберите --</option>
                 <option value="ДА" {{ (old('prepared_audiovisual_content', $formEntry->data['prepared_audiovisual_content'] ?? '') == 'ДА') ? 'selected' : '' }}>ДА</option>
                 <option value="НЕТ" {{ (old('prepared_audiovisual_content', $formEntry->data['prepared_audiovisual_content'] ?? '') == 'НЕТ') ? 'selected' : '' }}>НЕТ</option>
             </select>
         </div>
-        @if(isset($formEntry->data['file_prepared_audiovisual_content']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_prepared_audiovisual_content']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 24 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_prepared_audiovisual_content" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_prepared_audiovisual_content'] ?? [], 'name' => 'file_prepared_audiovisual_content'])
 
-        <!-- Пункт 25: Количество академических обменов для преподавателей -->
+        <!-- 27. academic_exchanges_teachers -->
         <div class="form-group">
-            <label>25. Количество академических обменов для преподавателей</label>
+            <label>27 (Ч2). Кол-во академических обменов НПР</label>
             <input type="number" name="academic_exchanges_teachers" class="form-control" min="0" value="{{ old('academic_exchanges_teachers', $formEntry->data['academic_exchanges_teachers'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_academic_exchanges_teachers']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_academic_exchanges_teachers']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 25 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_academic_exchanges_teachers" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_academic_exchanges_teachers'] ?? [], 'name' => 'file_academic_exchanges_teachers'])
 
-        <!-- Пункт 26: Процент преподавателей с повышенной квалификацией -->
+        <!-- 28. teachers_advanced_training_percentage -->
         <div class="form-group">
-            <label>26. Процент преподавателей с повышенной квалификацией (%)</label>
+            <label>28 (Ч2). Процент преподавателей с повыш. квалификацией (%)</label>
             <input type="number" name="teachers_advanced_training_percentage" class="form-control" min="0" max="100" value="{{ old('teachers_advanced_training_percentage', $formEntry->data['teachers_advanced_training_percentage'] ?? '') }}" required>
         </div>
-        @if(isset($formEntry->data['file_teachers_advanced_training_percentage']))
-            <p>Загруженный файл: <a href="{{ asset('storage/' . $formEntry->data['file_teachers_advanced_training_percentage']) }}" target="_blank">Скачать</a></p>
-        @endif
-        <div class="form-group">
-            <label>Загрузить файл для пункта 26 ЧАСТИ 2 (при необходимости)</label>
-            <input type="file" name="file_teachers_advanced_training_percentage" class="form-control-file">
-        </div>
+        @include('expert.partials.files', ['data' => $formEntry->data['file_teachers_advanced_training_percentage'] ?? [], 'name' => 'file_teachers_advanced_training_percentage'])
 
-        <!-- Кнопка отправки формы -->
         <button type="submit" class="btn btn-success mt-4">Сохранить изменения</button>
     </form>
 </div>

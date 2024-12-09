@@ -6,37 +6,53 @@ use App\Http\Controllers\ExpertController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\UniversityFormController;
 
-\Illuminate\Support\Facades\Auth::routes(['register' => false]);
+Illuminate\Support\Facades\Auth::routes(['register' => false]);
 
 Route::get('/', function () {
     return view('auth.login');
 });
 
 // Администратор
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::get('/admin/create-user', [AdminController::class, 'createUser'])->name('admin.createUser');
-    Route::post('/admin/store-user', [AdminController::class, 'storeUser'])->name('admin.storeUser');
-    Route::get('/admin/assign-expert', [AdminController::class, 'assignExpert'])->name('admin.assignExpert');
-    Route::post('/admin/store-assignment', [AdminController::class, 'storeAssignment'])->name('admin.storeAssignment');
-    Route::post('/admin/store-multiple-users', [AdminController::class, 'storeMultipleUsers'])->name(
-        'admin.storeMultipleUsers'
-    );
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Основные маршруты администратора
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/create-user', [AdminController::class, 'createUser'])->name('createUser');
+    Route::post('/store-user', [AdminController::class, 'storeUser'])->name('storeUser');
+    Route::get('/assign-expert', [AdminController::class, 'assignExpert'])->name('assignExpert');
+    Route::post('/store-assignment', [AdminController::class, 'storeAssignment'])->name('storeAssignment');
+    Route::post('/store-multiple-users', [AdminController::class, 'storeMultipleUsers'])->name('storeMultipleUsers');
 
+    // Маршруты для выгрузки отчетов
+    Route::get('/experts', [AdminController::class, 'experts'])->name('experts');
+    Route::get('/experts/export', [AdminController::class, 'exportExperts'])->name('exportExperts');
+    Route::get('/universities', [AdminController::class, 'universities'])->name('universities');
+    Route::get('/universities/export', [AdminController::class, 'exportUniversities'])->name('exportUniversities');
+    Route::get('/assignments', [AdminController::class, 'assignments'])->name('assignments');
+    Route::get('/assignments/export', [AdminController::class, 'exportAssignments'])->name('exportAssignments');
 
-    //маршруты для выгрузки отчетов
-    Route::get('/admin/experts', [AdminController::class, 'experts'])->name('admin.experts');
-    Route::get('/admin/experts/export', [AdminController::class, 'exportExperts'])->name('admin.exportExperts');
+    // Ресурсные маршруты для тестов
+    Route::resource('tests', \App\Http\Controllers\Admin\TestController::class);
 
-    Route::get('/admin/universities', [AdminController::class, 'universities'])->name('admin.universities');
-    Route::get('/admin/universities/export', [AdminController::class, 'exportUniversities'])->name(
-        'admin.exportUniversities'
-    );
+    // Вложенные ресурсные маршруты для вопросов и вариантов ответов
+    Route::prefix('tests/{test}')->name('tests.')->group(function () {
+        Route::resource('questions', \App\Http\Controllers\Admin\QuestionController::class)->except(
+            ['show', 'index', 'create']
+        )->names([
+            'store' => 'questions.store',
+            'update' => 'questions.update',
+            'edit' => 'questions.edit',
+            'destroy' => 'questions.destroy',
+        ]);
 
-    Route::get('/admin/assignments', [AdminController::class, 'assignments'])->name('admin.assignments');
-    Route::get('/admin/assignments/export', [AdminController::class, 'exportAssignments'])->name(
-        'admin.exportAssignments'
-    );
+        Route::resource('questions.options', \App\Http\Controllers\Admin\OptionController::class)->except(
+            ['show', 'index', 'create']
+        )->names([
+            'store' => 'questions.options.store',
+            'update' => 'questions.options.update',
+            'edit' => 'questions.options.edit',
+            'destroy' => 'questions.options.destroy',
+        ]);
+    });
 });
 
 // Группа маршрутов для экспертов, защищенная аутентификацией и ролью "expert"
@@ -59,9 +75,8 @@ Route::middleware(['auth', 'role:expert'])->prefix('expert')->name('expert.')->g
 
 // Вуз
 Route::middleware(['auth', 'role:university'])->group(function () {
-    Route::get('/university', [UniversityController::class, 'index'])->name('university.dashboard');
-    Route::get('/university/form', [UniversityController::class, 'form'])->name('university.form');
-    Route::post('/university/form', [UniversityController::class, 'storeForm'])->name('university.storeForm');
+    Route::get('/', [UniversityFormController::class, 'index'])->name('dashboard');
     Route::get('/university/form', [UniversityFormController::class, 'showForm'])->name('university.form');
     Route::post('/university/form', [UniversityFormController::class, 'submitForm'])->name('university.submitForm');
 });
+
