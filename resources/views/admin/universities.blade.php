@@ -72,6 +72,26 @@
         color: #c62828; /* Красный текст */
     }
 
+    /* Кнопка "Вернуться в админ-панель" */
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #66bb6a; /* Зеленоватый цвет */
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: bold;
+    }
+
+    .back-btn:hover {
+        background-color: #7cb342;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
     /* Медиа-запросы для адаптивности */
     @media (max-width: 600px) {
         .container {
@@ -87,6 +107,11 @@
         th, td {
             padding: 10px;
         }
+
+        .back-btn {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 
@@ -94,10 +119,11 @@
     <h1>Список вузов</h1>
 
     @if (session('error'))
-        <div class="error-messages">
-            {{ session('error') }}
-        </div>
+    <div class="error-messages">
+        {{ session('error') }}
+    </div>
     @endif
+    <a href="{{ route('admin.dashboard') }}" class="back-btn">Вернуться в админ-панель</a><br>
 
     <a href="{{ route('admin.exportUniversities') }}" class="export-btn">
         <i class="fas fa-file-excel"></i> Экспортировать в Excel
@@ -105,22 +131,22 @@
 
     <table class="table mt-3">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Email</th>
-                <!-- Добавьте другие необходимые поля -->
-            </tr>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Email</th>
+            <!-- Добавьте другие необходимые поля -->
+        </tr>
         </thead>
         <tbody>
-            @foreach ($universities as $university)
-                <tr>
-                    <td>{{ $university->id }}</td>
-                    <td>{{ $university->name }}</td>
-                    <td>{{ $university->email }}</td>
-                    <!-- Добавьте другие необходимые поля -->
-                </tr>
-            @endforeach
+        @foreach ($universities as $university)
+        <tr>
+            <td>{{ $university->id }}</td>
+            <td>{{ $university->name }}</td>
+            <td>{{ $university->email }}</td>
+            <!-- Добавьте другие необходимые поля -->
+        </tr>
+        @endforeach
         </tbody>
     </table>
 </div>

@@ -2,35 +2,32 @@
 
 @section('content')
 <style>
-    /* Общие стили для контейнера */
     .container {
         max-width: 800px;
         margin: 50px auto;
         padding: 30px;
-        background-color: #f0f9f0; /* Светло-зелёный фон */
+        background-color: #f0f9f0;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         font-family: 'Arial', sans-serif;
     }
 
-    /* Заголовки */
     h1 {
         text-align: center;
-        color: #2e7d32; /* Тёмно-зелёный */
+        color: #2e7d32;
         margin-bottom: 30px;
         font-size: 2.5rem;
     }
 
     h4 {
-        color: #388e3c; /* Средне-зелёный */
+        color: #388e3c;
         margin-bottom: 15px;
         font-size: 1.5rem;
     }
 
-    /* Стили для ошибок */
     .error-messages {
-        background-color: #ffcdd2; /* Светло-красный фон для ошибок */
-        border-left: 4px solid #f44336; /* Красная линия слева */
+        background-color: #ffcdd2;
+        border-left: 4px solid #f44336;
         padding: 10px 15px;
         margin-bottom: 20px;
         border-radius: 4px;
@@ -40,14 +37,13 @@
         list-style-type: none;
         padding-left: 0;
         margin: 0;
-        color: #c62828; /* Красный текст */
+        color: #c62828;
     }
 
     .error-messages li {
         margin-bottom: 5px;
     }
 
-    /* Стили для формы */
     form {
         display: flex;
         flex-direction: column;
@@ -56,8 +52,8 @@
     .user-form {
         margin-bottom: 30px;
         padding: 20px;
-        background-color: #ffffff; /* Белый фон для формы пользователя */
-        border: 1px solid #e0e0e0; /* Светло-серая рамка */
+        background-color: #ffffff;
+        border: 1px solid #e0e0e0;
         border-radius: 6px;
         position: relative;
     }
@@ -74,14 +70,14 @@
 
     .user-form label {
         margin-bottom: 5px;
-        color: #2e7d32; /* Тёмно-зелёный */
+        color: #2e7d32;
         font-weight: bold;
     }
 
     .user-form input,
     .user-form select {
         padding: 10px;
-        border: 1px solid #c8e6c9; /* Светло-зелёная рамка */
+        border: 1px solid #c8e6c9;
         border-radius: 4px;
         font-size: 1rem;
     }
@@ -89,11 +85,10 @@
     .user-form input:focus,
     .user-form select:focus {
         outline: none;
-        border-color: #66bb6a; /* Светло-зелёный при фокусе */
+        border-color: #66bb6a;
         box-shadow: 0 0 5px rgba(102, 187, 106, 0.5);
     }
 
-    /* Стили для кнопок */
     .btn {
         padding: 10px 20px;
         border: none;
@@ -105,29 +100,29 @@
     }
 
     .btn-primary {
-        background-color: #66bb6a; /* Светло-зелёный */
+        background-color: #66bb6a;
         color: #ffffff;
         margin-top: 20px;
     }
 
     .btn-primary:hover {
-        background-color: #388e3c; /* Средне-зелёный при наведении */
+        background-color: #388e3c;
         transform: translateY(-2px);
     }
 
     .btn-secondary {
-        background-color: #81c784; /* Ещё один оттенок зелёного */
+        background-color: #81c784;
         color: #ffffff;
         margin-top: 10px;
     }
 
     .btn-secondary:hover {
-        background-color: #388e3c; /* Средне-зелёный при наведении */
+        background-color: #388e3c;
         transform: translateY(-2px);
     }
 
     .btn-danger {
-        background-color: #e57373; /* Красновато-зелёный для удаления */
+        background-color: #e57373;
         color: #ffffff;
         position: absolute;
         top: 20px;
@@ -135,16 +130,33 @@
     }
 
     .btn-danger:hover {
-        background-color: #c62828; /* Темно-красный при наведении */
+        background-color: #c62828;
         transform: translateY(-2px);
     }
 
-    /* Стили для кнопки "Добавить пользователя" */
     #add-user {
         align-self: flex-start;
     }
 
-    /* Адаптивные стили */
+    /* Кнопка вернуться */
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #8bc34a;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .back-btn:hover {
+        background-color: #7cb342;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
     @media (max-width: 600px) {
         .container {
             padding: 20px;
@@ -168,6 +180,9 @@
 </style>
 
 <div class="container">
+    <!-- Кнопка вернуться в админ-панель -->
+    <a href="{{ route('admin.dashboard') }}" class="back-btn">Вернуться в админ-панель</a>
+
     <h1>Создание пользователей</h1>
 
     @if ($errors->any())
@@ -226,10 +241,8 @@
             const template = document.querySelector('.user-form');
             const newUserForm = template.cloneNode(true);
 
-            // Обновление заголовка
             newUserForm.querySelector('h4').textContent = 'Пользователь ' + (userIndex + 1);
 
-            // Очистка значений полей и обновление атрибутов name и id
             newUserForm.querySelectorAll('input, select').forEach(function (input) {
                 const name = input.getAttribute('name');
                 const id = input.getAttribute('id');
@@ -237,11 +250,7 @@
                 const newId = id.replace(/\d+/, userIndex);
                 input.setAttribute('name', newName);
                 input.setAttribute('id', newId);
-                if (input.type !== 'password') {
-                    input.value = '';
-                } else {
-                    input.value = '';
-                }
+                input.value = '';
             });
 
             userForms.appendChild(newUserForm);

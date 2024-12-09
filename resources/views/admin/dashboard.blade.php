@@ -90,6 +90,10 @@
         <a href="{{ route('admin.assignments') }}" class="button-link">
             Закрепления экспертов за вузами
         </a>
+        <a href="{{ route('admin.tests.create') }}" class="button-link">
+            Создание тестирования для студентов
+        </a>
+
     </div>
 </div>
 @endsection

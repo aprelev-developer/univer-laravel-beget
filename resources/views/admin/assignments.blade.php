@@ -2,38 +2,34 @@
 
 @section('content')
 <style>
-    /* Общие стили для контейнера */
     .container {
         max-width: 1000px;
         margin: 50px auto;
         padding: 30px;
-        background-color: #f0fff0; /* Очень светло-зелёный фон */
+        background-color: #f0fff0;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         font-family: 'Arial', sans-serif;
     }
 
-    /* Заголовок страницы */
     h1 {
         text-align: center;
-        color: #2e7d32; /* Тёмно-зелёный */
+        color: #2e7d32;
         margin-bottom: 30px;
         font-size: 2.5rem;
     }
 
-    /* Подзаголовки экспертов */
     h3 {
-        color: #388e3c; /* Средне-зелёный */
+        color: #388e3c;
         margin-top: 40px;
         margin-bottom: 15px;
         font-size: 1.5rem;
     }
 
-    /* Кнопка "Экспортировать в Excel" */
     .export-btn {
         display: inline-block;
         padding: 10px 20px;
-        background-color: #66bb6a; /* Светло-зелёный */
+        background-color: #66bb6a;
         color: #ffffff;
         text-decoration: none;
         border-radius: 4px;
@@ -43,36 +39,20 @@
     }
 
     .export-btn:hover {
-        background-color: #388e3c; /* Средне-зелёный при наведении */
+        background-color: #388e3c;
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Стилизация списков вузов */
-    ul {
-        list-style-type: disc;
-        padding-left: 20px;
-        margin-bottom: 20px;
-    }
-
-    li {
-        padding: 8px 0;
-        color: #2e7d32; /* Тёмно-зелёный */
-        font-size: 1.1rem;
-    }
-
-    /* Стилизация сообщений об ошибках */
     .error-messages {
-        background-color: #ffcdd2; /* Светло-красный фон для ошибок */
-        border-left: 4px solid #f44336; /* Красная линия слева */
+        background-color: #ffcdd2;
+        border-left: 4px solid #f44336;
         padding: 10px 15px;
         margin-bottom: 20px;
         border-radius: 4px;
-        color: #c62828; /* Красный текст */
+        color: #c62828;
     }
 
-    /* Стилизация таблицы (если решите использовать таблицу для отображения данных) */
-    /*
     table {
         width: 100%;
         border-collapse: collapse;
@@ -80,7 +60,7 @@
     }
 
     thead {
-        background-color: #66bb6a; /* Светло-зелёный */
+        background-color: #66bb6a;
         color: #ffffff;
     }
 
@@ -88,19 +68,37 @@
         padding: 12px 15px;
         text-align: left;
         border-bottom: 1px solid #e0e0e0;
+        font-size: 1rem;
+        color: #2e7d32;
     }
 
     tbody tr:hover {
-        background-color: #e8f5e9; /* Очень светло-зелёный при наведении */
+        background-color: #e8f5e9;
     }
-    */
 
-    /* Иконки Font Awesome */
     .export-btn i {
         margin-right: 8px;
     }
 
-    /* Медиа-запросы для адаптивности */
+    /* Кнопка "Вернуться в админ-панель" */
+    .back-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        padding: 10px 20px;
+        background-color: #66bb6a; /* Зеленоватый цвет */
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        font-weight: bold;
+    }
+
+    .back-btn:hover {
+        background-color: #7cb342;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
     @media (max-width: 600px) {
         .container {
             padding: 20px;
@@ -116,13 +114,21 @@
             font-size: 1.3rem;
         }
 
-        li {
-            font-size: 1rem;
+        th, td {
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            width: 100%;
+            text-align: center;
         }
     }
 </style>
 
 <div class="container">
+    <!-- Кнопка возвращения на админ-панель -->
+    <a href="{{ route('admin.dashboard') }}" class="back-btn">Вернуться в админ-панель</a>
+
     <h1>Закрепления экспертов за вузами</h1>
 
     @if (session('error'))
@@ -138,11 +144,30 @@
     @foreach ($experts as $expert)
         <h3>Эксперт: {{ $expert->name }} ({{ $expert->email }})</h3>
         @if ($expert->universities->count() > 0)
-            <ul>
-                @foreach ($expert->universities as $university)
-                    <li>{{ $university->name }} ({{ $university->email }})</li>
-                @endforeach
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название вуза</th>
+                        <th>Email вуза</th>
+                        <th>Баллы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($expert->universities as $university)
+                        <tr>
+                            <td>{{ $university->name }}</td>
+                            <td>{{ $university->email }}</td>
+                            <td>
+                                @if($university->formEntry && $university->formEntry->score !== null)
+                                    {{ $university->formEntry->score }}
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         @else
             <p>Нет закрепленных вузов.</p>
         @endif
