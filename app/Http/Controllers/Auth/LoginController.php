@@ -18,7 +18,7 @@ class LoginController extends Controller
             case 'expert':
                 return redirect()->route('expert.dashboard');
             case 'university':
-                return redirect()->route('university.dashboard');
+                return redirect()->route('university.form');
             default:
                 return redirect('/');
         }
