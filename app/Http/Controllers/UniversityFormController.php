@@ -20,6 +20,13 @@ class UniversityFormController extends Controller
         return view('university.form', compact('formEntry'));
     }
 
+     public function form()
+    {
+        $form = auth()->user()->form;
+
+        return view('university.form', compact('form'));
+    }
+
     public function submitForm(Request $request): \Illuminate\Http\RedirectResponse
     {
         // Перечисляем все поля файлов:
