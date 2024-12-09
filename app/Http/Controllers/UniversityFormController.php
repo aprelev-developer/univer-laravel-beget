@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UniversityFormController extends Controller
 {
-
       public function index()
     {
         return view('university.dashboard');
@@ -18,13 +17,6 @@ class UniversityFormController extends Controller
         $formEntry = Auth::user()->formEntry;
 
         return view('university.form', compact('formEntry'));
-    }
-
-     public function form()
-    {
-        $form = auth()->user()->form;
-
-        return view('university.form', compact('form'));
     }
 
     public function submitForm(Request $request): \Illuminate\Http\RedirectResponse
