@@ -76,7 +76,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>3. Соблюдение при реализации программ (%)</label>
+                <label>3. Соблюдение при реализации программ подготовки служителей  и религиозного персонала, утвержденных Советом по исламскому образованию единых стандартов религиозного образования (%)</label>
                 <input type="number" name="compliance_percentage" class="form-control" min="0" max="100" value="{{ old('compliance_percentage', $formEntry->data['compliance_percentage'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -97,7 +97,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>4. Результаты тестирования (%)</label>
+                <label>4. Результаты тестирования остаточных знаний обучающихся (%)</label>
                 <input type="number" name="test_results" class="form-control" min="0" max="100" value="{{ old('test_results', $formEntry->data['test_results'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -118,7 +118,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>5. Доля трудоустроенных по специальности (%)</label>
+                <label>5. Количество студентов очной формы обучения (кол-во)</label>
                 <input type="number" name="employment_rate" class="form-control" min="0" max="100" value="{{ old('employment_rate', $formEntry->data['employment_rate'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -139,7 +139,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>6. Кол-во студентов очной формы</label>
+                <label>6. Количество студентов очной формы обучения из числа лиц, имеющих гражданство Российской Федерации по рождению(%)</label>
                 <input type="number" name="full_time_students" class="form-control" min="0" value="{{ old('full_time_students', $formEntry->data['full_time_students'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -160,7 +160,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>7. Степень обеспеченности ООП НПР (%)</label>
+                <label>7. Доля трудоустроенных по специальности выпускников за последние 3 года (%)</label>
                 <input type="number" name="npr_coverage" class="form-control" min="0" max="100" value="{{ old('npr_coverage', $formEntry->data['npr_coverage'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -181,7 +181,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>8. Доля НПР с учёной степенью (%)</label>
+                <label>8. Процент студентов очной формы обучения МОО, обучающихся по направлениям от мусульманских религиозных организаций: (%)</label>
                 <input type="number" name="degree_holders_percentage" class="form-control" min="0" max="100" value="{{ old('degree_holders_percentage', $formEntry->data['degree_holders_percentage'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -202,7 +202,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>9. Объем грантового финансирования (руб)</label>
+                <label>9. Процент выпускников МОО, обучившихся по направлениям от мусульманских религиозных организаций, и принятых на работу в данные религиозные организации (за последние 3 года): (%)</label>
                 <input type="number" name="grant_funding" class="form-control" min="0" value="{{ old('grant_funding', $formEntry->data['grant_funding'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -223,7 +223,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>10. Публикации в ВАК (на 1 НПР)</label>
+                <label>10. Степень обеспеченности реализации основных образовательных программ научно-педагогическими работниками в соответствии с профилем преподаваемой дисциплины (средний показатель по всем ООП)(%)</label>
                 <input type="number" name="vak_publications_per_npr" class="form-control" min="0" step="0.01" value="{{ old('vak_publications_per_npr', $formEntry->data['vak_publications_per_npr'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -244,7 +244,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>11. Опубликованных монографий на 1 НПР (год)</label>
+                <label>11. Доля научно-педагогических работников МОО (в приведенных к целочисленным значениям ставок), имеющих ученую степень и (или) ученое звание, включая богословские степени и звания) (%)</label>
                 <input type="number" name="monographs_per_npr" class="form-control" min="0" step="0.01" value="{{ old('monographs_per_npr', $formEntry->data['monographs_per_npr'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -265,7 +265,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>12. Индекс Хирша (на 1 НПР)</label>
+                <label>12. Объем привлеченного государственного грантового финансирования на научные и образовательные проекты (от общего объема финансирования )(руб)</label>
                 <input type="number" name="h_index_per_npr" class="form-control" min="0" step="0.01" value="{{ old('h_index_per_npr', $formEntry->data['h_index_per_npr'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -286,7 +286,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>13. Наличие победителей олимпиад (чел.)</label>
+                <label>13. Количество публикаций в научных журналах рецензируемых ВАК (в расчете на 1 единицу штатного состава НПР)</label>
                 <input type="number" name="olympiad_winners" class="form-control" min="0" value="{{ old('olympiad_winners', $formEntry->data['olympiad_winners'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -307,7 +307,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>14. Участие в гражданско-патриот. мероприятиях (шт.)</label>
+                <label>14. Количество опубликованных монографий на одного штатного научно-педагогического работника МОО в течение календарного года </label>
                 <input type="number" name="patriotic_events" class="form-control" min="0" value="{{ old('patriotic_events', $formEntry->data['patriotic_events'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -328,7 +328,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>15. Соответствие сайта МОО (%)</label>
+                <label>15. Средний показатель индекса научного цитирования Хирша публикаций научно-педагогических работников МОО (В расчете на 1 единицу НПР)</label>
                 <input type="number" name="website_compliance" class="form-control" min="0" max="100" value="{{ old('website_compliance', $formEntry->data['website_compliance'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -349,7 +349,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>16. Медийная активность (публ./год)</label>
+                <label>16. Наличие в течение календарного года среди студентов МОО победителей и призеров всероссийских и международных олимпиад и конкурсов (кол-во)</label>
                 <input type="number" name="media_activity" class="form-control" min="0" value="{{ old('media_activity', $formEntry->data['media_activity'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -370,7 +370,7 @@
         <div class="form-step">
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
-                <label>17. Кол-во студентов из коренных народов (%)</label>
+                <label>17. Участие вуза в мероприятиях гражданско-патриотической направленности </label>
                 <input type="number" name="indigenous_students_percentage" class="form-control" min="0" max="100" value="{{ old('indigenous_students_percentage', $formEntry->data['indigenous_students_percentage'] ?? '') }}" required>
             </div>
             <div class="form-group">
@@ -981,7 +981,7 @@
             <h3>Пункт {{ $currentStep }} из {{ $totalSteps }}</h3>
             <div class="form-group">
                 <label>27 (Часть 2). % преподавателей, прошедших КПК (%)</label>
-                <input type="number" name="teachers_advanced_training_percentage" class="form-control" min="0" max="100" value="{{ old('teachers_advanced_training_percentage', $formEntry->data['teachers_advanced_training_percentage'] ?? '') }}" required>
+                <input type="number" name="teachers_advanced_training_percentage" class="form-control" min="0" max="100" value="{{ old('teachers_advanced_training_percentage', $formEntry->data['teachers_advanced_training_percentage'] ?? '') }}" >
             </div>
             <div class="form-group">
                 <label>Загрузить файлы для данного пункта</label>
@@ -995,8 +995,6 @@
                 @endif
             </div>
         </div>
-        <!-- Это последний пункт (№27 в Часть 2, всего 45 пунктов считая 17 в части 1) -->
-
         <!-- Кнопки навигации -->
         <div class="form-navigation">
             <button type="button" class="previous btn btn-secondary">Назад</button>
@@ -1020,10 +1018,10 @@
         updateFormSteps();
 
         nextBtn.addEventListener('click', () => {
-            if (validateFormStep(steps[currentStep])) {
+            // if (validateFormStep(steps[currentStep])) {
                 currentStep++;
                 updateFormSteps();
-            }
+            // }
         });
 
         prevBtn.addEventListener('click', () => {
@@ -1045,16 +1043,16 @@
             progressBar.innerText = `Шаг ${currentStep + 1} из ${steps.length}`;
         }
 
-        function validateFormStep(step) {
-            const inputs = Array.from(step.querySelectorAll('input[required], select[required], textarea[required]'));
-            for (let input of inputs) {
-                if (!input.checkValidity()) {
-                    input.reportValidity();
-                    return false;
-                }
-            }
-            return true;
-        }
+        // function validateFormStep(step) {
+        //     const inputs = Array.from(step.querySelectorAll('input[required], select[required], textarea[required]'));
+        //     for (let input of inputs) {
+        //         if (!input.checkValidity()) {
+        //             input.reportValidity();
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // }
     });
 
      document.addEventListener('DOMContentLoaded', function () {

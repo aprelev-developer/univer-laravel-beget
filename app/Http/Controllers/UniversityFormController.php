@@ -12,6 +12,7 @@ class UniversityFormController extends Controller
     {
         return view('university.dashboard');
     }
+
     public function showForm()
     {
         $formEntry = Auth::user()->formEntry;
@@ -283,29 +284,27 @@ class UniversityFormController extends Controller
         }
         $totalScore += $P7;
 
-        // Показатель №8
-        // degree_holders_percentage (0..100)
-        $S8 = floatval($data['degree_holders_percentage']);
-        if ($S8 < 20) {
+        $S8 = floatval($data['degree_holders_percentage']); // Уже рассчитанный процент
+        if ($S8 < 10) {
             $P8 = 0;
-        } elseif ($S8 >= 20 && $S8 < 60) {
-            $P8 = 0.25 * $S8 - 5;
+        } elseif ($S8 >= 10 && $S8 < 25) {
+            $P8 = 0.4 * $S8 - 2;
         } else {
-            $P8 = 10;
+            $P8 = 6;
         }
         $totalScore += $P8;
 
-        // Показатель №9
-        // grant_funding
-        $S9 = floatval($data['grant_funding']);
-        if ($S9 == 0) {
+
+        $S9 = floatval($data['grant_funding']); // Уже рассчитанный процент
+        if ($S9 < 50) {
             $P9 = 0;
-        } elseif ($S9 > 0 && $S9 < 5000000) {
-            $P9 = 0.000002 * $S9;
+        } elseif ($S9 >= 50 && $S9 < 80) {
+            $P9 = (1 / 3) * $S9 - (50 / 3);
         } else {
             $P9 = 10;
         }
         $totalScore += $P9;
+
 
         // Показатель №10
         // vak_publications_per_npr - уже нормированное значение
@@ -319,17 +318,16 @@ class UniversityFormController extends Controller
         }
         $totalScore += $P10;
 
-        // Показатель №11
-        // monographs_per_npr
-        $S11 = floatval($data['monographs_per_npr']);
-        if ($S11 < 0.01) {
+        $S11 = floatval($data['monographs_per_npr']); // Уже рассчитанный процент
+        if ($S11 < 20) {
             $P11 = 0;
-        } elseif ($S11 >= 0.01 && $S11 < 0.5) {
-            $P11 = (600.0 / 49.0) * $S11 - (6.0 / 49.0);
+        } elseif ($S11 >= 20 && $S11 < 60) {
+            $P11 = 0.25 * $S11 - 5;
         } else {
-            $P11 = 6;
+            $P11 = 10;
         }
         $totalScore += $P11;
+
 
         // Показатель №12
         // h_index_per_npr
