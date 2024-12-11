@@ -140,34 +140,16 @@ class UniversityFormController extends Controller
         $formEntry = Auth::user()->formEntry;
         $data = $validatedData;
 
+        // Обработка файлов: добавляем новые к уже существующим
         foreach ($fileFields as $fileField) {
+            $existingFiles = $formEntry->data[$fileField] ?? [];
             if ($request->hasFile($fileField)) {
-                // Получаем массив загруженных файлов
-                $uploadedFiles = $request->file($fileField);
-
-                // Может быть ситуация, что поле одно, но с multiple его станет массивом
-                // Если как-то получится что только один файл, нужно привести к массиву
-                if (!is_array($uploadedFiles)) {
-                    $uploadedFiles = [$uploadedFiles];
+                foreach ($request->file($fileField) as $file) {
+                    $filePath = $file->store('uploads', 'public');
+                    $existingFiles[] = $filePath;
                 }
-
-                $paths = [];
-                foreach ($uploadedFiles as $file) {
-                    // Сохраняем каждый файл
-                    $filename = time() . '_' . $file->getClientOriginalName();
-                    $path = $file->storeAs('uploads', $filename, 'public');
-                    $paths[] = $path;
-                }
-
-                // Теперь $validatedData[$fileField] будет содержать массив путей
-                $validatedData[$fileField] = $paths;
-            } elseif (isset($formEntry->data[$fileField])) {
-                // Если файлы не загружены в этот раз, оставляем старые пути
-                $validatedData[$fileField] = $formEntry->data[$fileField];
-            } else {
-                // Если никаких данных не было и нет, можем установить пустой массив
-                $validatedData[$fileField] = [];
             }
+            $validatedData[$fileField] = $existingFiles;
         }
 
         // Подсчет баллов
