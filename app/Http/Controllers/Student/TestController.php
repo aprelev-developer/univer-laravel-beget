@@ -74,14 +74,26 @@ class TestController extends Controller
         $total_questions = $test->questions->count();
 
         foreach ($test->questions as $question) {
-            $selected_option_id = $request->answers[$question->id] ?? null;
-            if ($selected_option_id) {
-                $selected_option = $question->options->find($selected_option_id);
-                if ($selected_option && $selected_option->is_correct) {
-                    $correct_answers++;
-                }
+            // Получаем выбранные ответы для текущего вопроса
+            $selected_option_ids = $request->answers[$question->id] ?? []; // Предполагается, что это массив
+            $selected_option_ids = is_array(
+                $selected_option_ids
+            ) ? $selected_option_ids : [$selected_option_ids]; // Убедимся, что это массив
+
+            // Получаем все правильные варианты для текущего вопроса
+            $correct_option_ids = $question->options->where('is_correct', true)->pluck('id')->toArray();
+
+            // Проверяем, что:
+            // 1. Все выбранные варианты являются правильными.
+            // 2. Все правильные варианты были выбраны.
+            if (!array_diff($selected_option_ids, $correct_option_ids) && !array_diff(
+                    $correct_option_ids,
+                    $selected_option_ids
+                )) {
+                $correct_answers++;
             }
         }
+
 
         // Сохраняем результат
         Result::create([
