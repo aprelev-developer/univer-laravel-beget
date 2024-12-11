@@ -8,7 +8,7 @@
     <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form method="POST" action="{{ route('university.submitForm') }}" enctype="multipart/form-data" id="multiStepForm">
+    <form method="POST" action="{{ route('university.submitForm') }}" enctype="multipart/form-data" id="form">
         @csrf
 
         <!-- Прогресс-бар -->
@@ -38,11 +38,9 @@
                 <label>Загрузить файлы для пункта 1</label>
                 <input type="file" name="file_program_theology[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_program_theology']) && is_array($formEntry->data['file_program_theology']))
-                    <p>Загруженные файлы:</p>
                     <ul>
                         @foreach($formEntry->data['file_program_theology'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -64,11 +62,10 @@
                 <label>Загрузить файлы для пункта 2</label>
                 <input type="file" name="file_state_accreditation[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_state_accreditation']) && is_array($formEntry->data['file_state_accreditation']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_state_accreditation'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -86,11 +83,10 @@
                 <label>Загрузить файлы для пункта 3</label>
                 <input type="file" name="file_compliance_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_compliance_percentage']) && is_array($formEntry->data['file_compliance_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_compliance_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -108,11 +104,10 @@
                 <label>Загрузить файлы для пункта 4</label>
                 <input type="file" name="file_test_results[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_test_results']) && is_array($formEntry->data['file_test_results']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_test_results'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -130,11 +125,10 @@
                 <label>Загрузить файлы для пункта 5</label>
                 <input type="file" name="file_employment_rate[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_employment_rate']) && is_array($formEntry->data['file_employment_rate']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_employment_rate'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -152,11 +146,10 @@
                 <label>Загрузить файлы для пункта 6</label>
                 <input type="file" name="file_full_time_students[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_full_time_students']) && is_array($formEntry->data['file_full_time_students']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_full_time_students'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -174,11 +167,10 @@
                 <label>Загрузить файлы для пункта 7</label>
                 <input type="file" name="file_npr_coverage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_npr_coverage']) && is_array($formEntry->data['file_npr_coverage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_npr_coverage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -196,11 +188,10 @@
                 <label>Загрузить файлы для пункта 8</label>
                 <input type="file" name="file_degree_holders_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_degree_holders_percentage']) && is_array($formEntry->data['file_degree_holders_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_degree_holders_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -218,11 +209,10 @@
                 <label>Загрузить файлы для пункта 9</label>
                 <input type="file" name="file_grant_funding[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_grant_funding']) && is_array($formEntry->data['file_grant_funding']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_grant_funding'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -240,11 +230,10 @@
                 <label>Загрузить файлы для пункта 10</label>
                 <input type="file" name="file_vak_publications_per_npr[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_vak_publications_per_npr']) && is_array($formEntry->data['file_vak_publications_per_npr']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_vak_publications_per_npr'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -262,11 +251,10 @@
                 <label>Загрузить файлы для пункта 11</label>
                 <input type="file" name="file_monographs_per_npr[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_monographs_per_npr']) && is_array($formEntry->data['file_monographs_per_npr']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_monographs_per_npr'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -284,11 +272,10 @@
                 <label>Загрузить файлы для пункта 12</label>
                 <input type="file" name="file_h_index_per_npr[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_h_index_per_npr']) && is_array($formEntry->data['file_h_index_per_npr']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_h_index_per_npr'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -306,11 +293,10 @@
                 <label>Загрузить файлы для пункта 13</label>
                 <input type="file" name="file_olympiad_winners[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_olympiad_winners']) && is_array($formEntry->data['file_olympiad_winners']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_olympiad_winners'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -328,11 +314,10 @@
                 <label>Загрузить файлы для пункта 14</label>
                 <input type="file" name="file_patriotic_events[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_patriotic_events']) && is_array($formEntry->data['file_patriotic_events']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_patriotic_events'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -350,11 +335,10 @@
                 <label>Загрузить файлы для пункта 15</label>
                 <input type="file" name="file_website_compliance[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_website_compliance']) && is_array($formEntry->data['file_website_compliance']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_website_compliance'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -372,11 +356,10 @@
                 <label>Загрузить файлы для пункта 16</label>
                 <input type="file" name="file_media_activity[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_media_activity']) && is_array($formEntry->data['file_media_activity']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_media_activity'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -394,11 +377,10 @@
                 <label>Загрузить файлы для пункта 17</label>
                 <input type="file" name="file_indigenous_students_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_indigenous_students_percentage']) && is_array($formEntry->data['file_indigenous_students_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_indigenous_students_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -418,11 +400,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_national_events_per_npr[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_national_events_per_npr']) && is_array($formEntry->data['file_national_events_per_npr']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_national_events_per_npr'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -444,11 +425,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_internal_quality_system[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_internal_quality_system']) && is_array($formEntry->data['file_internal_quality_system']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_internal_quality_system'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -466,11 +446,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_professional_competitions[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_professional_competitions']) && is_array($formEntry->data['file_professional_competitions']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_professional_competitions'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -488,11 +467,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_npr_award_winners[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_npr_award_winners']) && is_array($formEntry->data['file_npr_award_winners']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_npr_award_winners'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -510,11 +488,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_graduates_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_graduates_percentage']) && is_array($formEntry->data['file_graduates_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_graduates_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -532,11 +509,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_postgraduate_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_postgraduate_percentage']) && is_array($formEntry->data['file_postgraduate_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_postgraduate_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -554,11 +530,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_ebs_usage_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_ebs_usage_percentage']) && is_array($formEntry->data['file_ebs_usage_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_ebs_usage_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -576,11 +551,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_programs_availability[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_programs_availability']) && is_array($formEntry->data['file_programs_availability']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_programs_availability'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -598,11 +572,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_eios_usage_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_eios_usage_percentage']) && is_array($formEntry->data['file_eios_usage_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_eios_usage_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -624,11 +597,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_international_agreements[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_international_agreements']) && is_array($formEntry->data['file_international_agreements']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_international_agreements'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -646,11 +618,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_medrese_graduates_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_medrese_graduates_percentage']) && is_array($formEntry->data['file_medrese_graduates_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_medrese_graduates_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -672,11 +643,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_non_scientific_publications[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_non_scientific_publications']) && is_array($formEntry->data['file_non_scientific_publications']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_non_scientific_publications'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -694,11 +664,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_students_under_25_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_students_under_25_percentage']) && is_array($formEntry->data['file_students_under_25_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_students_under_25_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -716,11 +685,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_students_from_muslim_orgs_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_students_from_muslim_orgs_percentage']) && is_array($formEntry->data['file_students_from_muslim_orgs_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_students_from_muslim_orgs_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -738,11 +706,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_muslim_orgs_involved[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_muslim_orgs_involved']) && is_array($formEntry->data['file_muslim_orgs_involved']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_muslim_orgs_involved'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -760,11 +727,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_graduates_employed_in_muslim_orgs_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_graduates_employed_in_muslim_orgs_percentage']) && is_array($formEntry->data['file_graduates_employed_in_muslim_orgs_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_graduates_employed_in_muslim_orgs_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -782,11 +748,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_joint_events_with_muslim_orgs[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_joint_events_with_muslim_orgs']) && is_array($formEntry->data['file_joint_events_with_muslim_orgs']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_joint_events_with_muslim_orgs'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -804,11 +769,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_founders_funding_share[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_founders_funding_share']) && is_array($formEntry->data['file_founders_funding_share']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_founders_funding_share'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -826,11 +790,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_donations_share[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_donations_share']) && is_array($formEntry->data['file_donations_share']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_donations_share'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -848,11 +811,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_paid_education_share[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_paid_education_share']) && is_array($formEntry->data['file_paid_education_share']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_paid_education_share'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -870,11 +832,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_scientific_events_held[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_scientific_events_held']) && is_array($formEntry->data['file_scientific_events_held']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_scientific_events_held'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -892,11 +853,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_students_in_science_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_students_in_science_percentage']) && is_array($formEntry->data['file_students_in_science_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_students_in_science_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -918,11 +878,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_has_educational_plan[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_has_educational_plan']) && is_array($formEntry->data['file_has_educational_plan']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_has_educational_plan'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -940,11 +899,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_lectures_by_foreign_scholars[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_lectures_by_foreign_scholars']) && is_array($formEntry->data['file_lectures_by_foreign_scholars']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_lectures_by_foreign_scholars'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -962,11 +920,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_international_memberships[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_international_memberships']) && is_array($formEntry->data['file_international_memberships']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_international_memberships'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -988,11 +945,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_prepared_audiovisual_content[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_prepared_audiovisual_content']) && is_array($formEntry->data['file_prepared_audiovisual_content']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_prepared_audiovisual_content'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -1010,11 +966,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_academic_exchanges_teachers[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_academic_exchanges_teachers']) && is_array($formEntry->data['file_academic_exchanges_teachers']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_academic_exchanges_teachers'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -1032,11 +987,10 @@
                 <label>Загрузить файлы для данного пункта</label>
                 <input type="file" name="file_teachers_advanced_training_percentage[]" class="form-control-file" multiple>
                 @if(isset($formEntry->data['file_teachers_advanced_training_percentage']) && is_array($formEntry->data['file_teachers_advanced_training_percentage']))
-                    <p>Загруженные файлы:</p>
+
                     <ul>
                         @foreach($formEntry->data['file_teachers_advanced_training_percentage'] as $file)
-                            <li><a href="{{ asset('storage/' . $file) }}" target="_blank">Скачать</a></li>
-                        @endforeach
+                           @endforeach
                     </ul>
                 @endif
             </div>
@@ -1055,7 +1009,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('multiStepForm');
+        const form = document.getElementById('form');
         const steps = Array.from(form.querySelectorAll('.form-step'));
         const nextBtn = form.querySelector('.next');
         const prevBtn = form.querySelector('.previous');
@@ -1101,6 +1055,33 @@
             }
             return true;
         }
+    });
+
+     document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('form');
+        const url = '{{ route("university.form.save_partial") }}'; // Укажите маршрут для сохранения
+
+        form.addEventListener('input', function (event) {
+            const formData = new FormData(form);
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log(data.message); // Можно добавить всплывающее уведомление
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка сохранения данных:', error);
+            });
+        });
     });
 </script>
 

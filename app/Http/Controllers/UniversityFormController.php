@@ -8,13 +8,20 @@ use Illuminate\Support\Facades\Auth;
 
 class UniversityFormController extends Controller
 {
-      public function index()
+    public function index()
     {
         return view('university.dashboard');
     }
     public function showForm()
     {
         $formEntry = Auth::user()->formEntry;
+
+        if ($formEntry && $formEntry->is_submitted) {
+            return redirect()->route('university.dashboard')->with(
+                'error',
+                'Форма уже отправлена и не может быть изменена.'
+            );
+        }
 
         return view('university.form', compact('formEntry'));
     }
@@ -133,50 +140,66 @@ class UniversityFormController extends Controller
         $data = $validatedData;
 
         foreach ($fileFields as $fileField) {
-        if ($request->hasFile($fileField)) {
-            // Получаем массив загруженных файлов
-            $uploadedFiles = $request->file($fileField);
+            if ($request->hasFile($fileField)) {
+                // Получаем массив загруженных файлов
+                $uploadedFiles = $request->file($fileField);
 
-            // Может быть ситуация, что поле одно, но с multiple его станет массивом
-            // Если как-то получится что только один файл, нужно привести к массиву
-            if(!is_array($uploadedFiles)) {
-                $uploadedFiles = [$uploadedFiles];
+                // Может быть ситуация, что поле одно, но с multiple его станет массивом
+                // Если как-то получится что только один файл, нужно привести к массиву
+                if (!is_array($uploadedFiles)) {
+                    $uploadedFiles = [$uploadedFiles];
+                }
+
+                $paths = [];
+                foreach ($uploadedFiles as $file) {
+                    // Сохраняем каждый файл
+                    $filename = time() . '_' . $file->getClientOriginalName();
+                    $path = $file->storeAs('uploads', $filename, 'public');
+                    $paths[] = $path;
+                }
+
+                // Теперь $validatedData[$fileField] будет содержать массив путей
+                $validatedData[$fileField] = $paths;
+            } elseif (isset($formEntry->data[$fileField])) {
+                // Если файлы не загружены в этот раз, оставляем старые пути
+                $validatedData[$fileField] = $formEntry->data[$fileField];
+            } else {
+                // Если никаких данных не было и нет, можем установить пустой массив
+                $validatedData[$fileField] = [];
             }
-
-            $paths = [];
-            foreach ($uploadedFiles as $file) {
-                // Сохраняем каждый файл
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('uploads', $filename, 'public');
-                $paths[] = $path;
-            }
-
-            // Теперь $validatedData[$fileField] будет содержать массив путей
-            $validatedData[$fileField] = $paths;
-        } elseif (isset($formEntry->data[$fileField])) {
-            // Если файлы не загружены в этот раз, оставляем старые пути
-            $validatedData[$fileField] = $formEntry->data[$fileField];
-        } else {
-            // Если никаких данных не было и нет, можем установить пустой массив
-            $validatedData[$fileField] = [];
         }
+
+        // Подсчет баллов
+        $score = $this->calculateScore($validatedData);
+
+        // Сохранение
+        // Убедитесь, что в модели FormEntry у вас есть cast: protected $casts = ['data' => 'array'];
+        $formEntry = FormEntry::updateOrCreate(
+            ['university_id' => Auth::id()],
+            [
+                'data' => $validatedData,
+                'score' => $score,
+            ]
+        );
+
+        return redirect()->route('university.form')->with('success', 'Форма успешно отправлена.');
     }
 
-    // Подсчет баллов
-    $score = $this->calculateScore($validatedData);
+    public function savePartial(Request $request)
+    {
+        $formEntry = Auth::user()->formEntry;
 
-    // Сохранение
-    // Убедитесь, что в модели FormEntry у вас есть cast: protected $casts = ['data' => 'array'];
-    $formEntry = FormEntry::updateOrCreate(
-        ['university_id' => Auth::id()],
-        [
-            'data' => $validatedData,
-            'score' => $score,
-        ]
-    );
+        $data = $formEntry->data ?? []; // Получаем текущие данные из формы
+        $data = array_merge($data, $request->only(array_keys($request->all()))); // Обновляем данные
 
-    return redirect()->route('university.form')->with('success', 'Форма успешно отправлена.');
-}
+        $formEntry = FormEntry::updateOrCreate(
+            ['university_id' => Auth::id()],
+            ['data' => $data]
+        );
+
+        return response()->json(['success' => true, 'message' => 'Данные успешно сохранены.']);
+    }
+
 
     public function calculateScore($data)
     {

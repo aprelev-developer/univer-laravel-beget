@@ -97,6 +97,7 @@ Route::middleware(['auth', 'role:university'])->group(function () {
     Route::get('/', [UniversityFormController::class, 'index'])->name('dashboard');
     Route::get('/university/form', [UniversityFormController::class, 'showForm'])->name('university.form');
     Route::post('/university/form', [UniversityFormController::class, 'submitForm'])->name('university.submitForm');
+      Route::post('/university/form/save', [UniversityFormController::class, 'savePartial'])->name('university.form.save_partial');
 });
 
 // Маршруты для Студентов
