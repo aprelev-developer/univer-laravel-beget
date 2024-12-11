@@ -20,11 +20,11 @@ class OptionController extends Controller
 
         $question->options()->create([
             'option_text' => $request->option_text,
-            'is_correct' => $request->has('is_correct'),
+            'is_correct' => $request->boolean('is_correct'),
         ]);
 
         return redirect()->route('admin.tests.questions.edit', [$test->id, $question->id])
-                         ->with('success', 'Вариант ответа успешно добавлен.');
+            ->with('success', 'Вариант ответа успешно добавлен.');
     }
 
     // Метод для редактирования варианта ответа
@@ -33,7 +33,7 @@ class OptionController extends Controller
         return view('admin.options.edit', compact('test', 'question', 'option'));
     }
 
-    // Метод для обновления варианта ответа
+       // Метод для редактирования варианта ответа
     public function update(Test $test, Question $question, Option $option, Request $request)
     {
         $request->validate([
@@ -43,7 +43,7 @@ class OptionController extends Controller
 
         $option->update([
             'option_text' => $request->option_text,
-            'is_correct' => $request->has('is_correct'),
+            'is_correct' => $request->boolean('is_correct'),
         ]);
 
         return redirect()->route('admin.tests.questions.edit', [$test->id, $question->id])
@@ -56,6 +56,6 @@ class OptionController extends Controller
         $option->delete();
 
         return redirect()->route('admin.tests.questions.edit', [$test->id, $question->id])
-                         ->with('success', 'Вариант ответа успешно удален.');
+            ->with('success', 'Вариант ответа успешно удален.');
     }
 }

@@ -15,6 +15,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'university_id',
+        'group_id',
     ];
 
     protected $hidden = [
@@ -40,6 +42,26 @@ class User extends Authenticatable
     public function formEntry()
     {
         return $this->hasOne(FormEntry::class, 'university_id');
+    }
+
+      // Отношение к университету
+    public function university()
+    {
+        return $this->belongsTo(University::class);
+    }
+
+    // Отношение к группе
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
+    public function results()
+    {
+        return $this->hasMany(Result::class);
+    }
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
     }
 
 }

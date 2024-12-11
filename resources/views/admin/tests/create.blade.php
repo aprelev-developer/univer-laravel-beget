@@ -121,6 +121,7 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+
         <div class="form-group">
             <label for="description">Описание Теста</label>
             <textarea name="description" id="description" class="form-control" rows="4">{{ old('description') }}</textarea>
@@ -128,6 +129,37 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+
+        <div class="form-group">
+            <label for="university_id">Университет</label>
+            <select name="university_id" id="university_id" class="form-control" required>
+                <option value="">Выберите университет</option>
+                @foreach($universities as $university)
+                    <option value="{{ $university->id }}" {{ old('university_id') == $university->id ? 'selected' : '' }}>
+                        {{ $university->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('university_id')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="group_id">Группа</label>
+            <select name="group_id" id="group_id" class="form-control" required>
+                <option value="">Выберите группу</option>
+                @foreach($groups as $group)
+                    <option value="{{ $group->id }}" {{ old('group_id') == $group->id ? 'selected' : '' }}>
+                        {{ $group->name }}
+                    </option>
+                @endforeach
+            </select>
+            @error('group_id')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
         <button type="submit" class="btn-success mt-3">Создать Тест</button>
     </form>
 </div>

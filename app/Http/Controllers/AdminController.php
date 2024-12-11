@@ -135,5 +135,53 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard')->with('success', 'Пользователи созданы.');
     }
 
+     // Метод для отображения формы создания студента
+    public function createStudent()
+    {
+        $universities = University::all();
+        $groups = Group::all();
+        return view('admin.students.create', compact('universities', 'groups'));
+    }
+
+    // Метод для сохранения студента
+    public function storeStudent(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|unique:users,email',
+            'university_id' => 'required|exists:universities,id',
+            'group_id' => 'required|exists:groups,id',
+            'name' => 'required|string|max:255',
+        ]);
+
+        // Генерация случайного пароля
+        $password = Str::random(8);
+
+        // Создание пользователя
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'university_id' => $request->university_id,
+            'group_id' => $request->group_id,
+            'password' => Hash::make($password),
+        ]);
+
+        // Назначение роли студент
+        $user->assignRole('student');
+
+        // Отправка логина и пароля на email студента
+        // Здесь предполагается, что настройка почты уже выполнена
+        // Добавь код для отправки email, если необходимо
+
+        return redirect()->route('admin.students.index')
+                         ->with('success', "Студент успешно создан. Логин: {$user->email}, Пароль: {$password}");
+    }
+
+    // Метод для отображения списка студентов
+    public function indexStudents()
+    {
+        $students = User::role('student')->with('university', 'group')->paginate(20);
+        return view('admin.students.index', compact('students'));
+    }
+
 }
 

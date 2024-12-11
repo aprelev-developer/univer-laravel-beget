@@ -2,11 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class University extends Model
 {
-    // Другие свойства и методы
+    use HasFactory;
+
+    protected $fillable = ['name'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
+    public function tests()
+    {
+        return $this->hasMany(Test::class);
+    }
 
     /**
      * Связь с экспертами (многие ко многим).
