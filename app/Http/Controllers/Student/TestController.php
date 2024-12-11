@@ -47,14 +47,20 @@ class TestController extends Controller
         }
 
         $request->validate([
+            'surname' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'answers' => 'required|array',
             'answers.*' => 'required|integer|exists:options,id',
+        ]);
+        // Обновляем поле name в таблице users
+        $student->update([
+            'name' => $request->surname . ' ' . $request->name,
         ]);
 
         /**
          * @TODO Потом решить как проверить сдавал он тест или нет
          */
-        // Проверка, что студент уже не сдавал этот тест
+//         Проверка, что студент уже не сдавал этот тест
 //        $existingResult = $student->results()->where('test_id', $test->id)->first();
 //        if ($existingResult) {
 //            return redirect()->route('student.tests.index')->with('error', 'Вы уже сдавали этот тест.');

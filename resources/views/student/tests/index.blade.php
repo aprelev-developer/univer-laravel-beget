@@ -1,5 +1,3 @@
-<!-- resources/views/student/tests/index.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -14,20 +12,31 @@
                 <tr>
                     <th>Название Теста</th>
                     <th>Описание</th>
+                    <th>Статус</th>
                     <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($tests as $test)
-                    <tr>
+                    @php
+                        $isCompleted = $test->results()->where('user_id', auth()->user()->id)->exists();
+                    @endphp
+                    <tr class="{{ $isCompleted ? 'table-success' : '' }}">
                         <td>{{ $test->title }}</td>
                         <td>{{ $test->description }}</td>
                         <td>
-                            <a href="{{ route('student.tests.show', $test->id) }}" class="btn btn-primary">Просмотреть</a>
-                            <form action="{{ route('student.tests.submit', $test->id) }}" method="POST" style="display:inline-block;">
-                                @csrf
-                                <button type="submit" class="btn btn-success">Сдать Тест</button>
-                            </form>
+                            @if($isCompleted)
+                                <span class="badge bg-success">Пройден</span>
+                            @else
+                                <span class="badge bg-primary">Не пройден</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if(!$isCompleted)
+                                <a href="{{ route('student.tests.show', $test->id) }}" class="btn btn-success">Сдать Тест</a>
+                            @else
+                                <button class="btn btn-secondary" disabled>Тест пройден</button>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
