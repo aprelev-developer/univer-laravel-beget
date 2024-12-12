@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
-
 @section('content')
 <div class="container">
     <h1>Редактировать Вариант Ответа</h1>
@@ -12,7 +11,10 @@
             <input type="text" name="option_text" id="option_text" class="form-control" required value="{{ old('option_text', $option->option_text) }}">
         </div>
         <div class="form-group form-check">
-            <input type="checkbox" name="is_correct" id="is_correct" class="form-check-input" {{ old('is_correct', $option->is_correct) ? 'checked' : '' }}>
+            <!-- Скрытое поле для отправки значения 0 -->
+            <input type="hidden" name="is_correct" value="0">
+            <!-- Чекбокс -->
+            <input type="checkbox" name="is_correct" id="is_correct" class="form-check-input" value="1" {{ old('is_correct', $option->is_correct) ? 'checked' : '' }}>
             <label class="form-check-label" for="is_correct">Правильный Ответ</label>
         </div>
         <button type="submit" class="btn btn-success mt-2">Обновить Вариант</button>
