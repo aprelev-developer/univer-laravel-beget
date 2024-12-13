@@ -20,4 +20,14 @@ class Question extends Model
     {
         return $this->hasMany(Option::class);
     }
+
+    // Автоматическое удаление связанных записей
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($question) {
+            $question->options()->delete();
+        });
+    }
 }

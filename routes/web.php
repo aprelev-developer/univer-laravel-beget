@@ -104,7 +104,6 @@ Route::middleware(['auth', 'role:university'])->group(function () {
 Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
     // Отображение списка доступных тестов
     Route::get('/tests', [\App\Http\Controllers\Student\TestController::class, 'index'])->name('tests.index');
-
     // Отображение конкретного теста
     Route::get('/tests/{test}', [\App\Http\Controllers\Student\TestController::class, 'show'])->name('tests.show');
 

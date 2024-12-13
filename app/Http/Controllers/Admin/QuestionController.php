@@ -21,7 +21,7 @@ class QuestionController extends Controller
         ]);
 
         return redirect()->route('admin.tests.edit', $test->id)
-                         ->with('success', 'Вопрос успешно добавлен.');
+            ->with('success', 'Вопрос успешно добавлен.');
     }
 
     public function edit(Test $test, Question $question)
@@ -41,13 +41,18 @@ class QuestionController extends Controller
         ]);
 
         return redirect()->route('admin.tests.edit', $test->id)
-                         ->with('success', 'Вопрос успешно обновлен.');
+            ->with('success', 'Вопрос успешно обновлен.');
     }
 
-    public function destroy(Test $test, Question $question)
+    public function destroy($testId, $questionId)
     {
+        $question = Question::where('id', $questionId)->where('test_id', $testId)->firstOrFail();
+
+        // Удаление вопроса
         $question->delete();
-        return redirect()->route('admin.tests.edit', $test->id)
-                         ->with('success', 'Вопрос успешно удален.');
+
+        return redirect()
+            ->route('admin.tests.edit', $testId)
+            ->with('success', 'Вопрос успешно удален.');
     }
 }
