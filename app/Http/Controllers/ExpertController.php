@@ -54,22 +54,27 @@ class ExpertController extends Controller
         return view('expert.viewForm', compact('university', 'formEntry'));
     }
 
-    public function editForm($universityId)
-    {
-        // Проверка, что эксперт прикреплен к этому универу
-        $expert = Auth::user();
-        $university = $expert->universities()->where('university_id', $universityId)->firstOrFail();
+ public function editForm($universityId)
+{
+    // Проверка, что эксперт прикреплен к этому универу
+    $expert = Auth::user();
 
-        $formEntry = $university->formEntry;
+    // Указываем таблицу явно, чтобы избежать ошибки
+    $university = $expert->universities()
+        ->where('expert_university.university_id', $universityId)
+        ->firstOrFail();
 
-        // Проверяем, можно ли редактировать
-        if (!$formEntry || $formEntry->is_editable == false) {
-            return redirect()->route('expert.index')->with('error', 'Редактирование запрещено или форма не найдена.');
-        }
+    $formEntry = $university->formEntry;
 
-        // Отображаем форму с данными $formEntry->data
-        return view('expert.edit_form', compact('university', 'formEntry'));
+    // Проверяем, можно ли редактировать
+    if (!$formEntry || $formEntry->is_editable == false) {
+        return redirect()->route('expert.index')->with('error', 'Редактирование запрещено или форма не найдена.');
     }
+
+    // Отображаем форму с данными $formEntry->data
+    return view('expert.edit_form', compact('university', 'formEntry'));
+}
+
 
     public function updateForm(Request $request, $universityId)
 {
